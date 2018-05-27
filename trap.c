@@ -14,6 +14,8 @@ extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 struct spinlock tickslock;
 uint ticks;
 
+int mappages(pde_t *pgdir,void *va,uint size, uint pa, int perm);
+
 void
 tvinit(void)
 {
@@ -77,7 +79,10 @@ trap(struct trapframe *tf)
             cpu->id, tf->cs, tf->eip);
     lapiceoi();
     break;
-   
+//  case T_PGFLT:
+//    cprintf("Page Fault \n");
+//    exit();
+//    break;
   //PAGEBREAK: 13
   default:
     if(proc == 0 || (tf->cs&3) == 0){
@@ -86,6 +91,29 @@ trap(struct trapframe *tf)
               tf->trapno, cpu->id, tf->eip, rcr2());
       panic("trap");
     }
+
+    //cprintf("proc->sz : %d    addr: %d  , proc->context size : %d\n",proc->sz,rcr2());
+        
+    if(tf->trapno == T_PGFLT){
+        char *mem;
+         
+        uint a = PGROUNDDOWN(rcr2());
+        uint newsz = proc->sz;
+        for(;a<newsz;a+=PGSIZE){
+        mem = kalloc();
+        if(mem == 0){
+            cprintf("out of memory\n");
+            return;
+
+        }
+        memset(mem,0,PGSIZE);
+
+        mappages(proc->pgdir,(char *)a,PGSIZE,v2p(mem),PTE_W | PTE_U);
+        }
+        return;
+
+    }
+    
     // In user space, assume process misbehaved.
     cprintf("pid %d %s: trap %d err %d on cpu %d "
             "eip 0x%x addr 0x%x--kill proc\n",

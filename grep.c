@@ -48,6 +48,7 @@ main(int argc, char *argv[])
   pattern = argv[1];
   
   if(argc <= 2){
+
     grep(pattern, 0);
     exit();
   }
@@ -57,6 +58,7 @@ main(int argc, char *argv[])
       printf(1, "grep: cannot open %s\n", argv[i]);
       exit();
     }
+
     grep(pattern, fd);
     close(fd);
   }

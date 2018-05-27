@@ -1,0 +1,172 @@
+sysproc.c:42:  return proc->pid;
+sysproc.c:53:  addr = proc->sz;
+sysproc.c:55://  cprintf("before proc->sz: %d\n",proc->sz);
+sysproc.c:56:  proc->sz += n;
+sysproc.c:58://  cprintf("after proc->sz:%d\n",proc->sz);
+sysproc.c:75:    if(proc->killed){
+console.c:243:      if(proc->killed){
+trap.c:42:    if(proc->killed)
+trap.c:44:    proc->tf = tf;
+trap.c:46:    if(proc->killed)
+trap.c:95:    //cprintf("proc->sz : %d    addr: %d  , proc->context size : %d\n",proc->sz,rcr2());
+trap.c:109:        mappages(proc->pgdir,(char *)a,PGSIZE,v2p(mem),PTE_W | PTE_U);
+trap.c:116:            proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
+trap.c:118:    proc->killed = 1;
+trap.c:124:  if(proc && proc->killed && (tf->cs&3) == DPL_USER)
+trap.c:129:  if(proc && proc->state == RUNNING && tf->trapno == T_IRQ0+IRQ_TIMER)
+trap.c:133:  if(proc && proc->killed && (tf->cs&3) == DPL_USER)
+fs.c:613:    ip = idup(proc->cwd);
+vm.c:173:  cpu->ts.esp0 = (uint)proc->kstack + KSTACKSIZE;
+Binary file .vm.c.swo matches
+kernel.asm:1264:      if(proc->killed){
+kernel.asm:1822:  safestrcpy(proc->name, last, sizeof(proc->name));
+kernel.asm:1833:  oldpgdir = proc->pgdir;
+kernel.asm:1837:  proc->pgdir = pgdir;
+kernel.asm:1841:  proc->sz = sz;
+kernel.asm:1845:  proc->tf->eip = elf.entry;  // main
+kernel.asm:1850:  proc->tf->esp = sp;
+kernel.asm:4537:    ip = idup(proc->cwd);
+kernel.asm:4614:    ip = idup(proc->cwd);
+kernel.asm:7910:      if(ncpu != proc->apicid){
+kernel.asm:7917:        cprintf("mpinit: ncpu=%d apicid=%d\n", ncpu, proc->apicid);
+kernel.asm:7932:      if(proc->flags & MPBOOT)
+kernel.asm:8518:      if(p->readopen == 0 || proc->killed){
+kernel.asm:8638:    if(proc->killed){
+kernel.asm:9081:  sz = proc->sz;
+kernel.asm:9088:    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
+kernel.asm:9109:    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+kernel.asm:9128:  proc->sz = sz;
+kernel.asm:9171:  if((np->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
+kernel.asm:9205:  np->sz = proc->sz;
+kernel.asm:9214:  *np->tf = *proc->tf;
+kernel.asm:9235:    if(proc->ofile[i])
+kernel.asm:9242:      np->ofile[i] = filedup(proc->ofile[i]);
+kernel.asm:9256:  *np->tf = *proc->tf;
+kernel.asm:9265:    if(proc->ofile[i])
+kernel.asm:9266:      np->ofile[i] = filedup(proc->ofile[i]);
+kernel.asm:9267:  np->cwd = idup(proc->cwd);
+kernel.asm:9278:  safestrcpy(np->name, proc->name, sizeof(proc->name));
+kernel.asm:9347:    if(proc->ofile[fd]){
+kernel.asm:9354:      fileclose(proc->ofile[fd]);
+kernel.asm:9363:      proc->ofile[fd] = 0;
+kernel.asm:9378:      fileclose(proc->ofile[fd]);
+kernel.asm:9379:      proc->ofile[fd] = 0;
+kernel.asm:9385:  iput(proc->cwd);
+kernel.asm:9394:  proc->cwd = 0;
+kernel.asm:9405:  wakeup1(proc->parent);
+kernel.asm:9440:  wakeup1(proc->parent);
+kernel.asm:9452:  proc->state = ZOMBIE;
+kernel.asm:9567:    if(!havekids || proc->killed){
+kernel.asm:9657:      swtch(&cpu->scheduler, proc->context);
+kernel.asm:9709:// and have changed proc->state.
+kernel.asm:9738:  if(proc->state == RUNNING)
+kernel.asm:9760:  swtch(&proc->context, cpu->scheduler);
+kernel.asm:9793:  proc->state = RUNNABLE;
+kernel.asm:9901:  proc->chan = chan;
+kernel.asm:9905:  proc->state = SLEEPING;
+kernel.asm:9912:  proc->chan = 0;
+kernel.asm:11114:  if(addr >= proc->sz || addr+4 > proc->sz)
+kernel.asm:11151:  if(addr >= proc->sz)
+kernel.asm:11163:  ep = (char*)proc->sz;
+kernel.asm:11185:  if(addr >= proc->sz)
+kernel.asm:11188:  ep = (char*)proc->sz;
+kernel.asm:11210:  return fetchint(proc->tf->esp + 4 + 4*n, ip);
+kernel.asm:11249:  if((uint)i >= proc->sz || (uint)i+size > proc->sz)
+kernel.asm:11322:  num = proc->tf->eax;
+kernel.asm:11337:    proc->tf->eax = syscalls[num]();
+kernel.asm:11347:            proc->pid, proc->name, num);
+kernel.asm:11352:  num = proc->tf->eax;
+kernel.asm:11354:    proc->tf->eax = syscalls[num]();
+kernel.asm:11364:            proc->pid, proc->name, num);
+kernel.asm:11365:    proc->tf->eax = -1;
+kernel.asm:11401:  if(fd < 0 || fd >= NOFILE || (f=proc->ofile[fd]) == 0)
+kernel.asm:11453:    if(proc->ofile[fd] == 0){
+kernel.asm:11460:      proc->ofile[fd] = f;
+kernel.asm:11478:    if(proc->ofile[fd] == 0){
+kernel.asm:11479:      proc->ofile[fd] = f;
+kernel.asm:11676:  proc->ofile[fd] = 0;
+kernel.asm:12792:  iput(proc->cwd);
+kernel.asm:12801:  proc->cwd = ip;
+kernel.asm:13001:      proc->ofile[fd0] = 0;
+kernel.asm:13123:  return proc->pid;
+kernel.asm:13153:  addr = proc->sz;
+kernel.asm:13158://  cprintf("before proc->sz: %d\n",proc->sz);
+kernel.asm:13159:  proc->sz += n;
+kernel.asm:13167://  cprintf("after proc->sz:%d\n",proc->sz);
+kernel.asm:13209:    if(proc->killed){
+kernel.asm:13616:    if(proc->killed)
+kernel.asm:13623:    proc->tf = tf;
+kernel.asm:13629:    if(proc->killed)
+kernel.asm:13786:    //cprintf("proc->sz : %d    addr: %d  , proc->context size : %d\n",proc->sz,rcr2());
+kernel.asm:13822:        mappages(proc->pgdir,(char *)a,PGSIZE,v2p(mem),PTE_W | PTE_U);
+kernel.asm:13850:            proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
+kernel.asm:13853:        mappages(proc->pgdir,(char *)a,PGSIZE,v2p(mem),PTE_W | PTE_U);
+kernel.asm:13865:            proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
+kernel.asm:13869:        mappages(proc->pgdir,(char *)a,PGSIZE,v2p(mem),PTE_W | PTE_U);
+kernel.asm:13887:            proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
+kernel.asm:13889:    proc->killed = 1;
+kernel.asm:13905:  if(proc && proc->killed && (tf->cs&3) == DPL_USER)
+kernel.asm:13924:  if(proc && proc->state == RUNNING && tf->trapno == T_IRQ0+IRQ_TIMER)
+kernel.asm:13940:  if(proc && proc->killed && (tf->cs&3) == DPL_USER)
+kernel.asm:13958:    proc->tf = tf;
+kernel.asm:13960:    if(proc->killed)
+kernel.asm:13967:  if(proc && proc->killed && (tf->cs&3) == DPL_USER)
+kernel.asm:17584:  cpu->ts.esp0 = (uint)proc->kstack + KSTACKSIZE;
+Binary file .proc.c.swp matches
+Binary file .trap.c.swo matches
+mp.c:117:      if(ncpu != proc->apicid){
+mp.c:118:        cprintf("mpinit: ncpu=%d apicid=%d\n", ncpu, proc->apicid);
+mp.c:121:      if(proc->flags & MPBOOT)
+proc.c:112:  sz = proc->sz;
+proc.c:114:    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
+proc.c:117:    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+proc.c:120:  proc->sz = sz;
+proc.c:139:  if((np->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
+proc.c:145:  np->sz = proc->sz;
+proc.c:147:  *np->tf = *proc->tf;
+proc.c:153:    if(proc->ofile[i])
+proc.c:154:      np->ofile[i] = filedup(proc->ofile[i]);
+proc.c:155:  np->cwd = idup(proc->cwd);
+proc.c:157:  safestrcpy(np->name, proc->name, sizeof(proc->name));
+proc.c:183:    if(proc->ofile[fd]){
+proc.c:184:      fileclose(proc->ofile[fd]);
+proc.c:185:      proc->ofile[fd] = 0;
+proc.c:190:  iput(proc->cwd);
+proc.c:192:  proc->cwd = 0;
+proc.c:197:  wakeup1(proc->parent);
+proc.c:209:  proc->state = ZOMBIE;
+proc.c:247:    if(!havekids || proc->killed){
+proc.c:292:      swtch(&cpu->scheduler, proc->context);
+proc.c:305:// and have changed proc->state.
+proc.c:315:  if(proc->state == RUNNING)
+proc.c:320:  swtch(&proc->context, cpu->scheduler);
+proc.c:329:  proc->state = RUNNABLE;
+proc.c:378:  proc->chan = chan;
+proc.c:379:  proc->state = SLEEPING;
+proc.c:383:  proc->chan = 0;
+syscall.c:20:  if(addr >= proc->sz || addr+4 > proc->sz)
+syscall.c:34:  if(addr >= proc->sz)
+syscall.c:37:  ep = (char*)proc->sz;
+syscall.c:48:  return fetchint(proc->tf->esp + 4 + 4*n, ip);
+syscall.c:61:  if((uint)i >= proc->sz || (uint)i+size > proc->sz)
+syscall.c:131:  num = proc->tf->eax;
+syscall.c:133:    proc->tf->eax = syscalls[num]();
+syscall.c:136:            proc->pid, proc->name, num);
+syscall.c:137:    proc->tf->eax = -1;
+Binary file .vm.c.swp matches
+exec.c:87:  safestrcpy(proc->name, last, sizeof(proc->name));
+exec.c:90:  oldpgdir = proc->pgdir;
+exec.c:91:  proc->pgdir = pgdir;
+exec.c:92:  proc->sz = sz;
+exec.c:93:  proc->tf->eip = elf.entry;  // main
+exec.c:94:  proc->tf->esp = sp;
+proc.h:1:// Segments in proc->gdt.
+pipe.c:85:      if(p->readopen == 0 || proc->killed){
+pipe.c:106:    if(proc->killed){
+sysfile.c:27:  if(fd < 0 || fd >= NOFILE || (f=proc->ofile[fd]) == 0)
+sysfile.c:44:    if(proc->ofile[fd] == 0){
+sysfile.c:45:      proc->ofile[fd] = f;
+sysfile.c:98:  proc->ofile[fd] = 0;
+sysfile.c:388:  iput(proc->cwd);
+sysfile.c:390:  proc->cwd = ip;
+sysfile.c:434:      proc->ofile[fd0] = 0;
